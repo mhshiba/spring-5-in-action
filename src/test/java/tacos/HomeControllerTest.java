@@ -1,6 +1,6 @@
-package com.example.demo;
+package tacos;
 
-import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -10,25 +10,34 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import tacos.TacoCloudApplication;
+import tacos.data.IngredientRepository;
+import tacos.data.OrderRepository;
+import tacos.data.TacoRepository;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = TacoCloudApplication.class)
-//@SpringBootTest(classes=TacoCloudApplication.class)
 @WebMvcTest
 public class HomeControllerTest {
 
 	@Autowired
 	private MockMvc mockMvc;
 
+	@MockBean
+	private IngredientRepository ingredientRepository;
+
+	@MockBean
+	private TacoRepository designRepository;
+
+	@MockBean
+	private OrderRepository orderRepository;
+
 	@Test
 	public void testHomePage() throws Exception {
 		mockMvc.perform(get("/")).andExpect(status().isOk()).andExpect(view().name("home"))
 				.andExpect(content().string(containsString("Welcome to...")));
 	}
+
 }
